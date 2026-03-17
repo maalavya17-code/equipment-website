@@ -1,11 +1,14 @@
 'use client';
 import { useState, useEffect } from 'react';
-
 import Link from 'next/link';
 
 export default function AdminProducts() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
+
+  // ✅ Base URLs (safe for both local + production)
+  const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api';
+  const BASE_URL = API_URL.replace('/api', '');
 
   useEffect(() => {
     fetchProducts();
@@ -13,7 +16,7 @@ export default function AdminProducts() {
 
   const fetchProducts = async () => {
     try {
-      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`);
+      const res = await fetch(`${API_URL}/products`);
       const data = await res.json();
       setProducts(data);
     } catch (err) {
@@ -25,12 +28,17 @@ export default function AdminProducts() {
 
   const deleteProduct = async (id) => {
     if (!confirm('Are you sure you want to delete this product?')) return;
+
     try {
       const token = localStorage.getItem('adminToken');
-      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${id}`, {
+
+      await fetch(`${API_URL}/products/${id}`, {
         method: 'DELETE',
-        headers: { Authorization: `Bearer ${token}` }
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
       });
+
       fetchProducts();
     } catch (err) {
       alert('Delete failed');
@@ -43,7 +51,11 @@ export default function AdminProducts() {
     <div>
       <div className="flex justify-between items-center mb-8">
         <h1 className="text-3xl font-bold text-gray-900">Manage Products</h1>
-        <Link href="/admin/products/add" className="bg-brand-green text-white px-6 py-2 rounded-lg font-bold hover:bg-brand-green-light transition-colors">
+
+        <Link
+          href="/admin/products/add"
+          className="bg-brand-green text-white px-6 py-2 rounded-lg font-bold hover:bg-brand-green-light transition-colors"
+        >
           + Add New Product
         </Link>
       </div>
@@ -58,24 +70,60 @@ export default function AdminProducts() {
               <th className="py-4 px-6 font-semibold text-gray-700 text-right">Actions</th>
             </tr>
           </thead>
+
           <tbody>
             {products.length > 0 ? (
-              products.map(prod => (
-                <tr key={prod._id} className="border-b border-gray-100 hover:bg-gray-50/50">
-                  <td className="py-4 px-6">
-                     <img src={prod.images?.[0] || 'https://via.placeholder.com/50'} alt={prod.name} className="w-12 h-12 object-cover rounded bg-gray-100" />
-                  </td>
-                  <td className="py-4 px-6 font-medium text-gray-900">{prod.name}</td>
-                  <td className="py-4 px-6 text-gray-500">{prod.category?.name || 'Uncategorized'}</td>
-                  <td className="py-4 px-6 text-right space-x-3">
-                    <Link href={`/admin/products/${prod._id}`} className="text-blue-600 hover:underline">Edit</Link>
-                    <button onClick={() => deleteProduct(prod._id)} className="text-red-600 hover:underline">Delete</button>
-                  </td>
-                </tr>
-              ))
+              products.map((prod) => {
+                const imagePath = prod.images?.[0];
+
+                return (
+                  <tr
+                    key={prod._id}
+                    className="border-b border-gray-100 hover:bg-gray-50/50"
+                  >
+                    <td className="py-4 px-6">
+                      <img
+                        src={
+                          imagePath
+                            ? `${BASE_URL}/${imagePath}`
+                            : 'https://via.placeholder.com/50'
+                        }
+                        alt={prod.name}
+                        className="w-12 h-12 object-cover rounded bg-gray-100"
+                      />
+                    </td>
+
+                    <td className="py-4 px-6 font-medium text-gray-900">
+                      {prod.name}
+                    </td>
+
+                    <td className="py-4 px-6 text-gray-500">
+                      {prod.category?.name || 'Uncategorized'}
+                    </td>
+
+                    <td className="py-4 px-6 text-right space-x-3">
+                      <Link
+                        href={`/admin/products/${prod._id}`}
+                        className="text-blue-600 hover:underline"
+                      >
+                        Edit
+                      </Link>
+
+                      <button
+                        onClick={() => deleteProduct(prod._id)}
+                        className="text-red-600 hover:underline"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
-                <td colSpan="4" className="py-8 text-center text-gray-500">No products found. Click 'Add Product' to create one.</td>
+                <td colSpan="4" className="py-8 text-center text-gray-500">
+                  No products found. Click 'Add Product' to create one.
+                </td>
               </tr>
             )}
           </tbody>
