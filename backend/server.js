@@ -23,7 +23,9 @@ app.use(helmet({ crossOriginResourcePolicy: false }));
 app.use(cors({
   origin: [
     "http://localhost:3000",
-    "https://equipment-website.vercel.app"
+    "https://equipment-website.vercel.app",
+    "https://maalavyaenterprises.com",
+    "https://www.maalavyaenterprises.com"
   ],
   methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
