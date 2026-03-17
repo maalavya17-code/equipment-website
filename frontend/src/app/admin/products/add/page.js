@@ -58,7 +58,7 @@ export default function AddProduct() {
       imgData.append('image', imageFile);
 
       const uploadRes = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/upload/image`,
+        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/upload/image`,
         {
           method: 'POST',
           headers: {
@@ -100,7 +100,7 @@ export default function AddProduct() {
     console.log("FINAL PAYLOAD:", payload); // DEBUG
 
     const res = await fetch(
-      `${process.env.NEXT_PUBLIC_API_URL}/products`,
+      `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`,
       {
         method: 'POST',
         headers: {
