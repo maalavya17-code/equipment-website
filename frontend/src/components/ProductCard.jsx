@@ -1,18 +1,17 @@
 import Link from 'next/link';
 
 export default function ProductCard({ product }) {
-  const BASE_URL = process.env.NEXT_PUBLIC_API_URL.replace('/api', '');
-
-  const imagePath = product.images?.[0];
-  const defaultImage = imagePath
-    ? `${BASE_URL}/${imagePath}`
-    : 'https://via.placeholder.com/400x300?text=No+Image';
+  console.log("Product Image:", product.images);
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col border border-gray-100">
       <div className="relative h-64 w-full bg-gray-50 flex items-center justify-center p-4">
         <img
-          src={defaultImage}
+          src={
+            product.images && product.images.length > 0
+              ? product.images[0]
+              : 'https://via.placeholder.com/300x200'
+          }
           alt={product.name}
           className="object-contain h-full w-full group-hover:scale-105 transition-transform duration-300"
         />
