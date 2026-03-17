@@ -12,7 +12,7 @@ export default function AdminEnquiries() {
   const fetchEnquiries = async () => {
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:5000/api/enquiries', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/enquiries`, {
         headers: { Authorization: `Bearer ${token}` }
       });
       if (res.ok) {
@@ -32,7 +32,7 @@ export default function AdminEnquiries() {
     const newStatus = currentStatus === 'Pending' ? 'Resolved' : 'Pending';
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch(`http://localhost:5000/api/enquiries/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/enquiries/${id}`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',
@@ -52,7 +52,7 @@ export default function AdminEnquiries() {
     if (!confirm('Are you sure you want to delete this enquiry?')) return;
     try {
       const token = localStorage.getItem('adminToken');
-      await fetch(`http://localhost:5000/api/enquiries/${id}`, {
+      await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/enquiries/${id}`, {
         method: 'DELETE',
         headers: { Authorization: `Bearer ${token}` }
       });

@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 async function getExhibitions() {
-  const res = await fetch('http://localhost:5000/api/content/exhibitions', { next: { revalidate: 3600 } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/content/exhibitions`, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
   return res.json();
 }

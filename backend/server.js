@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
@@ -15,36 +15,20 @@ const enquiryRoutes = require('./routes/enquiryRoutes');
 const contentRoutes = require('./routes/contentRoutes');
 const uploadRoutes = require('./routes/uploadRoutes');
 
-// Connect Database
-connectDB();
-
 const app = express();
 
 // Security Middlewares
-app.use(helmet({ crossOriginResourcePolicy: false })); // allows images to load
-app.use('*', cors({
-  origin: function (origin, callback) {
-    const allowedOrigins = ["http://localhost:3000"];
+app.use(helmet({ crossOriginResourcePolicy: false }));
 
-    if (process.env.CLIENT_URL) {
-      allowedOrigins.push(process.env.CLIENT_URL);
-    }
-
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+app.use(cors({
+  origin: process.env.CLIENT_URL || "http://localhost:3000",
+  methods: ["GET", "POST", "PUT", "DELETE"],
   credentials: true
 }));
 
-app.options('*', cors());
-
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 100, // Limit each IP to 100 requests per `window`
+  windowMs: 15 * 60 * 1000,
+  max: 100,
   message: 'Too many requests from this IP, please try again after 15 minutes',
   standardHeaders: true,
   legacyHeaders: false,
@@ -55,7 +39,7 @@ app.use('/api/', apiLimiter);
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Static Folder for Uploads
+// Static Folder
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routes
@@ -76,6 +60,18 @@ app.use(errorHandler);
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, () => {
-  console.log(`Server running in ${process.env.NODE_ENV || 'development'} mode on port ${PORT}`);
-});
+// 🔥 RUN SERVER (Always boots Express so APIs respond, regardless of DB state)
+const startServer = async () => {
+  try {
+    await connectDB(); // ✅ WAIT for DB FIRST
+
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+    });
+
+  } catch (error) {
+    console.error("❌ Failed to start server:", error.message);
+  }
+};
+
+startServer();

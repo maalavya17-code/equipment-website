@@ -14,9 +14,9 @@ export default function AdminDashboard() {
         const headers = { Authorization: `Bearer ${token}` };
 
         const [prodRes, enqRes, catRes] = await Promise.all([
-          fetch('http://localhost:5000/api/products'),
-          fetch('http://localhost:5000/api/enquiries', { headers }),
-          fetch('http://localhost:5000/api/categories')
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/enquiries`, { headers }),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/categories`)
         ]);
 
         const products = prodRes.ok ? await prodRes.json() : [];

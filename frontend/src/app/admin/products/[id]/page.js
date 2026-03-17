@@ -29,7 +29,7 @@ export default function EditProduct({ params }) {
 
   const fetchCategories = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/categories');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/categories`);
       const data = await res.json();
       setCategories(data);
     } catch (err) {
@@ -39,7 +39,7 @@ export default function EditProduct({ params }) {
 
   const fetchProductDetails = async () => {
     try {
-      const res = await fetch(`http://localhost:5000/api/products/${id}`);
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${id}`);
       if (res.ok) {
         const prod = await res.json();
         setFormData({
@@ -82,7 +82,7 @@ export default function EditProduct({ params }) {
         const imgData = new FormData();
         imgData.append('image', imageFile);
 
-        const uploadRes = await fetch('http://localhost:5000/api/upload/image', {
+        const uploadRes = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/upload/image`, {
           method: 'POST',
           headers: { Authorization: `Bearer ${token}` },
           body: imgData,
@@ -104,7 +104,7 @@ export default function EditProduct({ params }) {
         images: imagePaths,
       };
 
-      const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

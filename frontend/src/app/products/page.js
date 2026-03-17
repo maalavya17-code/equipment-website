@@ -4,13 +4,13 @@ import ProductCard from '@/components/ProductCard';
 import Link from 'next/link';
 
 async function getCategories() {
-  const res = await fetch('http://localhost:5000/api/categories', { next: { revalidate: 3600 } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/categories`, { next: { revalidate: 3600 } });
   if (!res.ok) return [];
   return res.json();
 }
 
 async function getProducts() {
-  const res = await fetch('http://localhost:5000/api/products', { cache: 'no-store' }); // Always fresh for filtering if we do full page reloads
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`, { cache: 'no-store' }); // Always fresh for filtering if we do full page reloads
   if (!res.ok) return [];
   return res.json();
 }
