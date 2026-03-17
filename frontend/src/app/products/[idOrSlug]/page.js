@@ -3,7 +3,7 @@ import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
 
 async function getProduct(idOrSlug) {
-  const res = await fetch(`http://localhost:5000/api/products/${idOrSlug}`, { next: { revalidate: 60 } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${idOrSlug}`, { next: { revalidate: 60 } });
   if (!res.ok) return null;
   return res.json();
 }
@@ -121,7 +121,7 @@ export default async function ProductDetailPage({ params }) {
                      Request Quotation
                    </Link>
                    {product.brochureFile && (
-                     <a href={`http://localhost:5000${product.brochureFile}`} target="_blank" rel="noreferrer" className="sm:w-1/3 bg-white border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white text-center font-bold py-4 px-6 rounded-xl transition-colors flex items-center justify-center">
+                     <a href={`${process.env.NEXT_PUBLIC_API_URL ? process.env.NEXT_PUBLIC_API_URL.replace('/api', '') : 'http://localhost:5000'}${product.brochureFile}`} target="_blank" rel="noreferrer" className="sm:w-1/3 bg-white border-2 border-brand-blue text-brand-blue hover:bg-brand-blue hover:text-white text-center font-bold py-4 px-6 rounded-xl transition-colors flex items-center justify-center">
                        📄 Brochure
                      </a>
                    )}

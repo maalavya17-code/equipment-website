@@ -1,16 +1,14 @@
 const mongoose = require("mongoose");
+const dns = require("dns");
 
 const connectDB = async () => {
   try {
-    const conn = await mongoose.connect(process.env.MONGO_URI, {
-      serverSelectionTimeoutMS: 30000,
-      socketTimeoutMS: 45000
-    });
-
-    console.log("MongoDB Connected:", conn.connection.host);
-  } catch (error) {
-    console.error("MongoDB connection failed:", error.message);
+    dns.setServers(['8.8.8.8']); // Bypassing local Windows SRV lookup failure
+  } catch (dnsErr) {
+    console.warn("⚠️ DNS override warning:", dnsErr.message);
   }
+  const conn = await mongoose.connect(process.env.MONGO_URI);
+  console.log(`✅ MongoDB Connected: ${conn.connection.host}`);
 };
 
 module.exports = connectDB;

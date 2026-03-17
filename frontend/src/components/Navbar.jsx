@@ -50,7 +50,6 @@ export default function Navbar() {
               </Link>
               {/* Simple dropdown indicator for design purposes */}
             </div>
-            <Link href="/clients" className="text-gray-800 hover:text-brand-green font-bold transition-colors text-lg">Clients</Link>
             <Link href="/contact" className="text-gray-800 hover:text-brand-green font-bold transition-colors text-lg">Contact Us</Link>
             
             <Link href="/contact" className="ml-4 bg-brand-green border-2 border-brand-green text-white px-6 py-2.5 rounded text-lg font-bold hover:bg-white hover:text-brand-green transition-all shadow-md">

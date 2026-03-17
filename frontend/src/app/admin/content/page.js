@@ -20,7 +20,7 @@ export default function AdminContent() {
 
   const fetchContent = async () => {
     try {
-      const res = await fetch('http://localhost:5000/api/sitecontents');
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/content`);
       if (res.ok) {
         const data = await res.json();
         setContent({
@@ -44,7 +44,7 @@ export default function AdminContent() {
     setSaving(true);
     try {
       const token = localStorage.getItem('adminToken');
-      const res = await fetch('http://localhost:5000/api/sitecontents', {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/content`, {
         method: 'PUT',
         headers: { 
           'Content-Type': 'application/json',

@@ -30,7 +30,6 @@ export default function Footer() {
               <li><Link href="/" className="hover:text-brand-green transition-colors flex items-center"><span className="text-brand-green mr-2">›</span> Home</Link></li>
               <li><Link href="/about" className="hover:text-brand-green transition-colors flex items-center"><span className="text-brand-green mr-2">›</span> About Us</Link></li>
               <li><Link href="/products" className="hover:text-brand-green transition-colors flex items-center"><span className="text-brand-green mr-2">›</span> All Products</Link></li>
-              <li><Link href="/clients" className="hover:text-brand-green transition-colors flex items-center"><span className="text-brand-green mr-2">›</span> Our Clients</Link></li>
               <li><Link href="/contact" className="hover:text-brand-green transition-colors flex items-center"><span className="text-brand-green mr-2">›</span> Contact Us</Link></li>
             </ul>
           </div>
