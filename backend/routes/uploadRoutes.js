@@ -1,23 +1,22 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const { CloudinaryStorage } = require('multer-storage-cloudinary');
-const cloudinary = require('../config/cloudinary');
 
-const storage = new CloudinaryStorage({
-  cloudinary: cloudinary,
-  params: {
-    folder: 'equipment-products',
-    allowed_formats: ['jpg', 'png', 'jpeg', 'webp'],
-  },
-});
-
+// simple memory storage
+const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
-// Upload route
-router.post('/', upload.single('image'), (req, res) => {
+// 🔥 THIS IS THE ROUTE YOU ARE MISSING
+router.post('/image', upload.single('image'), (req, res) => {
+  console.log("UPLOAD HIT"); // debug
+
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+
+  // return fake image URL (temporary)
   res.json({
-    imageUrl: req.file.path, // 🔥 Cloudinary URL
+    filePaths: ['https://dummyimage.com/400x300/000/fff']
   });
 });
 
