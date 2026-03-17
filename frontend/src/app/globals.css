@@ -1,0 +1,33 @@
+@import "tailwindcss";
+
+/* MAALAVYA ENTERPRISES THEME */
+:root {
+  --background: #ffffff;
+  --foreground: #111827; /* Gray-900 */
+  
+  /* Brand Colors */
+  --brand-green: #15803d; /* Emerald 700 / vibrant corporate green */
+  --brand-green-light: #22c55e;
+  --brand-green-dark: #166534;
+  --brand-accent: #facc15; /* Yellow/Gold for CTAs if needed */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-brand-green: var(--brand-green);
+  --color-brand-green-light: var(--brand-green-light);
+  --color-brand-green-dark: var(--brand-green-dark);
+  --color-brand-accent: var(--brand-accent);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Base utility overrides or global element styling */
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-family: inherit;
+}
