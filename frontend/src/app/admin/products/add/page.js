@@ -45,61 +45,89 @@ export default function AddProduct() {
 
   // 🔥 FINAL SUBMIT (FIXED)
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+  e.preventDefault();
+  setLoading(true);
 
-    try {
-      const token = localStorage.getItem('adminToken');
+  try {
+    const token = localStorage.getItem('adminToken');
+    let imagePaths = [];
 
-      const formDataToSend = new FormData();
+    // ✅ STEP 1: Upload image FIRST
+    if (imageFile) {
+      const imgData = new FormData();
+      imgData.append('image', imageFile);
 
-      formDataToSend.append('name', formData.name);
-      formDataToSend.append(
-        'slug',
-        formData.name
-          .toLowerCase()
-          .replace(/[^a-z0-9]+/g, '-')
-          .replace(/(^-|-$)+/g, '')
-      );
-      formDataToSend.append('category', formData.category);
-      formDataToSend.append(
-        'shortDescription',
-        formData.description.substring(0, 150)
-      );
-      formDataToSend.append('fullDescription', formData.description);
-      formDataToSend.append('price', Number(formData.price) || 0);
-
-      // 🔥 KEY: image goes here
-      if (imageFile) {
-        formDataToSend.append('image', imageFile);
-      }
-
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`,
+      const uploadRes = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/upload/image`,
         {
           method: 'POST',
           headers: {
             Authorization: `Bearer ${token}`,
           },
-          body: formDataToSend,
+          body: imgData,
         }
       );
 
-      if (res.ok) {
-        router.push('/admin/products');
-      } else {
-        const errorText = await res.text();
-        console.error(errorText);
-        alert('Failed to add product');
+      const uploadData = await uploadRes.json();
+
+      if (!uploadRes.ok) {
+        console.error(uploadData);
+        throw new Error("Image upload failed");
       }
 
-    } catch (err) {
-      console.error(err);
-      alert('Failed to add product');
-    } finally {
-      setLoading(false);
+      imagePaths = uploadData.filePaths;
     }
-  };
+
+    // ✅ STEP 2: Send JSON (IMPORTANT)
+    const payload = {
+      name: formData.name,
+
+      slug: formData.name
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/(^-|-$)+/g, ''),
+
+      category: formData.category,
+
+      shortDescription: formData.description.slice(0, 120),
+      fullDescription: formData.description,
+
+      price: Number(formData.price) || 0,
+
+      images: imagePaths,
+    };
+
+    console.log("FINAL PAYLOAD:", payload); // DEBUG
+
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_API_URL}/products`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(payload),
+      }
+    );
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error(data);
+      alert(data.message || 'Failed to add product');
+      return;
+    }
+
+    router.push('/admin/products');
+
+  } catch (err) {
+    console.error(err);
+    alert('Failed to add product');
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="max-w-3xl mx-auto">
