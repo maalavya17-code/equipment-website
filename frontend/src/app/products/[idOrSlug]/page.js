@@ -41,7 +41,9 @@ export default async function ProductDetailPage({ params }) {
     );
   }
 
-  const defaultImage = product.images?.[0] || 'https://via.placeholder.com/600x400?text=No+Image';
+  const defaultImage = product.images?.[0] 
+    ? (product.images[0].startsWith('http') ? product.images[0] : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace('/api', '')}/${product.images[0]}`)
+    : 'https://dummyimage.com/600x400/000/fff';
 
   return (
     <>
@@ -77,7 +79,7 @@ export default async function ProductDetailPage({ params }) {
                    <div className="flex space-x-4 overflow-x-auto pb-2 w-full">
                      {product.images.map((img, idx) => (
                        <div key={idx} className="w-24 h-24 flex-shrink-0 bg-white border border-gray-200 rounded-lg p-2 cursor-pointer hover:border-brand-green transition-colors">
-                         <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
+                         <img src={img.startsWith('http') ? img : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace('/api', '')}/${img}`} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
                        </div>
                      ))}
                    </div>

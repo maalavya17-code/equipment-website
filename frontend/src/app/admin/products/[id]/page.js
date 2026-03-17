@@ -198,7 +198,11 @@ export default function EditProduct({ params }) {
             {currentImage && !imageFile && (
               <div className="mb-4">
                 <p className="text-xs text-gray-500 mb-2">Current Image:</p>
-                <img src={currentImage} alt="Current" className="h-32 object-contain bg-gray-50 border rounded p-2" />
+                <img 
+                  src={currentImage.startsWith('http') ? currentImage : `${(process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api').replace('/api', '')}/${currentImage}`}
+                  alt="Current" 
+                  className="h-32 object-contain bg-gray-50 border rounded p-2" 
+                />
               </div>
             )}
             <input

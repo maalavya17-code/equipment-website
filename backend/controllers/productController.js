@@ -51,7 +51,7 @@ const createProduct = async (req, res, next) => {
   try {
     const productData = {
       ...req.body,
-      images: req.file ? [req.file.path] : [], // 🔥 CLOUDINARY URL
+      images: req.body.images || [], // 🔥 Use images from JSON payload
     };
 
     const product = new Product(productData);
@@ -74,8 +74,8 @@ const updateProduct = async (req, res, next) => {
       Object.assign(product, req.body);
 
       // 🔥 UPDATE IMAGE IF NEW UPLOADED
-      if (req.file) {
-        product.images = [req.file.path];
+      if (req.body.images && req.body.images.length > 0) {
+        product.images = req.body.images;
       }
 
       const updatedProduct = await product.save();

@@ -85,8 +85,8 @@ export default function AdminProducts() {
                       <img
                         src={
                           imagePath
-                            ? `${BASE_URL}/${imagePath}`
-                            : 'https://via.placeholder.com/50'
+                            ? (imagePath.startsWith('http') ? imagePath : `${BASE_URL}/${imagePath}`)
+                            : 'https://dummyimage.com/400x300/000/fff'
                         }
                         alt={prod.name}
                         className="w-12 h-12 object-cover rounded bg-gray-100"
