@@ -9,7 +9,18 @@ export const metadata = {
   description: 'Leading manufacturer and supplier of biomedical waste bins, garbage containers, wheelbarrows, plastic pallets, and premium hospital furniture.',
 };
 
-export default function Home() {
+async function getFeaturedProducts() {
+  try {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products?limit=4`, { next: { revalidate: 3600 } });
+    if (!res.ok) return null;
+    const data = await res.json();
+    return Array.isArray(data) ? data.slice(0, 4) : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+export default async function Home() {
   // Hardcoded Categories according to user mandate
   const categories = [
     { name: 'Biomedical Waste Bins', icon: '♻️', desc: 'Secure medical waste disposal bins' },
@@ -24,12 +35,15 @@ export default function Home() {
   ];
 
   // Placeholder Featured Products
-  const featuredProducts = [
+  const placeholderProducts = [
     { _id: '1', slug: 'biomedical-bin-60l', name: '60L Biomedical Waste Bin (Yellow)', shortDescription: 'Foot-pedal operated medical grade bin for infectious waste.', category: { name: 'Biomedical Waste Bins' } },
     { _id: '2', slug: 'mobile-garbage-container-240l', name: '240L Mobile Garbage Container', shortDescription: 'UV stabilized HDPE container with solid rubber wheels.', category: { name: 'Garbage Containers' } },
     { _id: '3', slug: 'electric-ot-table-pro', name: 'Electric OT Table ProSeries', shortDescription: 'Advanced electro-hydraulic operating table with C-Arm compatibility.', category: { name: 'OT Tables' } },
     { _id: '4', slug: 'heavy-duty-wheelbarrow', name: 'Heavy Duty Wheelbarrow 100L', shortDescription: 'Galvanized steel tray with pneumatic tire for rough terrains.', category: { name: 'Wheelbarrows' } },
   ];
+
+  const fetchedProducts = await getFeaturedProducts();
+  const featuredProducts = (fetchedProducts && fetchedProducts.length > 0) ? fetchedProducts : placeholderProducts;
 
   return (
     <>

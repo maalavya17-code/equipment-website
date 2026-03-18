@@ -14,6 +14,19 @@ const adminSchema = new mongoose.Schema({
   role: {
     type: String,
     default: 'admin'
+  },
+  resetOtp: {
+    type: String,
+  },
+  resetOtpExpiry: {
+    type: Date,
+  },
+  otpRequestCount: {
+    type: Number,
+    default: 0
+  },
+  otpLockUntil: {
+    type: Date,
   }
 }, { timestamps: true });
 

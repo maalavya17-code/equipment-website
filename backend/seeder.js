@@ -8,15 +8,27 @@ connectDB();
 
 async function seedAdmin() {
   try {
-    await AdminUser.deleteMany(); // Clear existing
-    
-    await AdminUser.create({
-      email: "admin@maalavya.com",
-      password: "Admin@123", // The AdminUser pre('save') hook will hash this automatically!
-      role: "admin"
-    });
+    const email = process.env.ADMIN_EMAIL;
+    const password = process.env.ADMIN_PASSWORD;
 
-    console.log("✅ Admin created");
+    if (!email || !password) {
+      console.log("❌ Admin credentials missing in .env");
+      return process.exit();
+    }
+
+    const existingAdmin = await AdminUser.findOne({ email });
+
+    if (!existingAdmin) {
+      await AdminUser.create({
+        email,
+        password,
+        role: "admin"
+      });
+      console.log("✅ Admin created");
+    } else {
+      console.log("⚠️ Admin already exists");
+    }
+
     process.exit();
   } catch (err) {
     console.error(err);

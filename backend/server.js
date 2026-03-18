@@ -55,6 +55,10 @@ app.use('/api/enquiries', enquiryRoutes);
 app.use('/api/content', contentRoutes);
 app.use('/api/upload', uploadRoutes);
 
+//test route
+app.post('/api/test', (req, res) => {
+  res.send("TEST WORKING");
+});
 // Default Route
 app.get('/', (req, res) => {
   res.json({ message: 'Medical Equipment API Running...' });
