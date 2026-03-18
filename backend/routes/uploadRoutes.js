@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const multer = require('multer');
 const cloudinary = require('cloudinary').v2;
+const { protect } = require('../middleware/auth');
 
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
@@ -14,7 +15,7 @@ const storage = multer.memoryStorage();
 const upload = multer({ storage });
 
 // 🔥 THIS IS THE ROUTE YOU ARE MISSING
-router.post('/image', upload.single('image'), async (req, res) => {
+router.post('/image', protect, upload.single('image'), async (req, res) => {
   console.log("UPLOAD HIT"); // debug
 
   if (!req.file) {

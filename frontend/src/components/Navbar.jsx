@@ -1,7 +1,11 @@
+"use client";
+import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 
 export default function Navbar() {
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+
   return (
     <header className="w-full bg-white shadow-md relative z-50">
       {/* Top Contact Bar */}
@@ -59,11 +63,38 @@ export default function Navbar() {
 
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center">
-            <button className="text-brand-green hover:text-brand-green-dark focus:outline-none">
-              <svg className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+            <button 
+              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+              className="text-brand-green hover:text-brand-green-dark focus:outline-none p-2"
+              aria-label="Toggle mobile menu"
+            >
+              <svg className="h-8 w-8 transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {isMobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h16M4 18h16" />
+                )}
               </svg>
             </button>
+          </div>
+        </div>
+      </div>
+
+      {/* Mobile Menu Dropdown */}
+      <div 
+        className={`md:hidden absolute w-full bg-white shadow-2xl border-t-4 border-brand-green transition-all duration-300 ease-in-out transform origin-top z-40 ${
+          isMobileMenuOpen ? 'scale-y-100 opacity-100' : 'scale-y-0 opacity-0 pointer-events-none'
+        }`}
+      >
+        <div className="px-4 pt-4 pb-6 space-y-2 max-h-[80vh] overflow-y-auto">
+          <Link href="/" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-lg font-bold text-gray-800 hover:text-brand-green hover:bg-green-50 transition-colors">Home</Link>
+          <Link href="/about" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-lg font-bold text-gray-800 hover:text-brand-green hover:bg-green-50 transition-colors">About Us</Link>
+          <Link href="/products" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-lg font-bold text-gray-800 hover:text-brand-green hover:bg-green-50 transition-colors">Our Products</Link>
+          <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block px-4 py-3 rounded-lg text-lg font-bold text-gray-800 hover:text-brand-green hover:bg-green-50 transition-colors">Contact Us</Link>
+          <div className="pt-4 border-t border-gray-100 mt-2">
+            <Link href="/contact" onClick={() => setIsMobileMenuOpen(false)} className="block w-full text-center bg-brand-green text-white px-6 py-4 rounded-lg text-lg font-bold hover:bg-brand-green-dark transition-colors shadow-md">
+              Send Enquiry
+            </Link>
           </div>
         </div>
       </div>
