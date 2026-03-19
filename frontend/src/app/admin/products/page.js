@@ -18,7 +18,7 @@ export default function AdminProducts() {
     try {
       const res = await fetch(`${API_URL}/products`);
       const data = await res.json();
-      setProducts(data);
+      setProducts(data.products || data);
     } catch (err) {
       console.error(err);
     } finally {
@@ -98,7 +98,7 @@ export default function AdminProducts() {
                     </td>
 
                     <td className="py-4 px-6 text-gray-500">
-                      {prod.category?.name || 'Uncategorized'}
+                      {typeof prod.category === 'string' ? prod.category : (prod.category?.name || 'Uncategorized')}
                     </td>
 
                     <td className="py-4 px-6 text-right space-x-3">

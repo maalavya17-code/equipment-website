@@ -14,17 +14,17 @@ export default function AdminDashboard() {
         const headers = { Authorization: `Bearer ${token}` };
 
         const [prodRes, enqRes, catRes] = await Promise.all([
-          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`),
+          fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/count`),
           fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/enquiries`, { headers }),
           fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/categories`)
         ]);
 
-        const products = prodRes.ok ? await prodRes.json() : [];
+        const productsCount = prodRes.ok ? await prodRes.json() : { total: 0 };
         const enquiries = enqRes.ok ? await enqRes.json() : [];
         const categories = catRes.ok ? await catRes.json() : [];
 
         setStats({
-          products: products.length,
+          products: productsCount.total,
           enquiries: enquiries.length,
           categories: categories.length
         });

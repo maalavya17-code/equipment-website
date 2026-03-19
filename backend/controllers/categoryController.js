@@ -5,8 +5,20 @@ const Category = require('../models/Category');
 // @access  Public
 const getCategories = async (req, res, next) => {
   try {
-    const categories = await Category.find({});
-    res.json(categories);
+    const defaultCategories = [
+      "Garbage Bins",
+      "Garbage Containers",
+      "Garbage Stations",
+      "Biomedical Waste Bins",
+      "Hospital Trolleys",
+      "Stretchers",
+      "Hospital Furniture",
+      "Wheelbarrows",
+      "Plastic Pallets",
+      "OT Tables",
+      "Other"
+    ];
+    res.json(defaultCategories);
   } catch (error) {
     next(error);
   }
