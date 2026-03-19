@@ -11,10 +11,10 @@ export const metadata = {
 
 async function getFeaturedProducts() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products?limit=4`, { next: { revalidate: 3600 } });
+    const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/featured`, { cache: 'no-store' });
     if (!res.ok) return null;
     const data = await res.json();
-    return Array.isArray(data) ? data.slice(0, 4) : null;
+    return Array.isArray(data) && data.length > 0 ? data : null;
   } catch (error) {
     return null;
   }

@@ -13,8 +13,20 @@ const productSchema = new mongoose.Schema({
     required: true
   },
   category: {
-    type: mongoose.Schema.ObjectId,
-    ref: 'Category',
+    type: String,
+    enum: [
+      "Garbage Bins",
+      "Garbage Containers",
+      "Garbage Stations",
+      "Biomedical Waste Bins",
+      "Hospital Trolleys",
+      "Stretchers",
+      "Hospital Furniture",
+      "Wheelbarrows",
+      "Plastic Pallets",
+      "OT Tables",
+      "Other"
+    ],
     required: true
   },
   shortDescription: {
@@ -49,6 +61,10 @@ const productSchema = new mongoose.Schema({
   brochureFile: {
     type: String,
     default: null
+  },
+  isFeatured: {
+    type: Boolean,
+    default: false
   }
 }, { timestamps: true });
 

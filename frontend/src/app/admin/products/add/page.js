@@ -13,6 +13,7 @@ export default function AddProduct() {
     category: '',
     description: '',
     price: '',
+    isFeatured: false,
   });
 
   const [imageFile, setImageFile] = useState(null);
@@ -34,7 +35,8 @@ export default function AddProduct() {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleImageChange = (e) => {
@@ -93,7 +95,7 @@ export default function AddProduct() {
       fullDescription: formData.description,
 
       price: Number(formData.price) || 0,
-
+      isFeatured: formData.isFeatured,
       images: imagePaths,
     };
 
@@ -170,9 +172,9 @@ export default function AddProduct() {
                 onChange={handleChange}
               >
                 <option value="">Select a category</option>
-                {categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
+                {categories.map((cat, idx) => (
+                  <option key={idx} value={cat}>
+                    {cat}
                   </option>
                 ))}
               </select>
@@ -219,6 +221,21 @@ export default function AddProduct() {
               onChange={handleImageChange}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg"
             />
+          </div>
+
+          {/* FEATURED */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              name="isFeatured"
+              checked={formData.isFeatured}
+              onChange={handleChange}
+              className="h-4 w-4 text-brand-green focus:ring-brand-green border-gray-300 rounded"
+            />
+            <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-900">
+              Show on Homepage Slider (Featured)
+            </label>
           </div>
 
           {/* BUTTON */}

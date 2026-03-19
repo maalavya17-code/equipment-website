@@ -4,7 +4,7 @@ import Footer from '@/components/Footer';
 import Image from 'next/image';
 
 async function getProduct(idOrSlug) {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${idOrSlug}`, { next: { revalidate: 60 } });
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${idOrSlug}`, { cache: 'no-store' });
   if (!res.ok) return null;
   return res.json();
 }
@@ -24,10 +24,13 @@ export default async function ProductDetailPage({ params }) {
   const product = await getProduct(idOrSlug);
 
   const getCleanCategory = (cat) => {
-    if (!cat || !cat.name || typeof cat.name !== 'string') return { _id: 'cat-other', name: 'Other', slug: 'other' };
-    const lower = cat.name.toLowerCase();
-    if (lower.includes('test') || lower.includes('debug') || lower.includes('automated') || /\d{4,}/.test(cat.name)) {
+    const catName = typeof cat === 'string' ? cat : (cat?.name || 'Other');
+    const lower = catName.toLowerCase();
+    if (lower.includes('test') || lower.includes('debug') || lower.includes('automated') || /\d{4,}/.test(catName)) {
       return { _id: 'cat-other', name: 'Other', slug: 'other' };
+    }
+    if (typeof cat === 'string') {
+      return { _id: `cat-${lower.replace(/[^a-z0-9]+/g, '-')}`, name: catName, slug: lower.replace(/[^a-z0-9]+/g, '-') };
     }
     return cat;
   };

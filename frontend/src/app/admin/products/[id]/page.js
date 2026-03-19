@@ -18,6 +18,7 @@ export default function EditProduct({ params }) {
     category: '',
     description: '',
     price: '',
+    isFeatured: false,
   });
   const [imageFile, setImageFile] = useState(null);
   const [currentImage, setCurrentImage] = useState('');
@@ -44,9 +45,10 @@ export default function EditProduct({ params }) {
         const prod = await res.json();
         setFormData({
           name: prod.name || '',
-          category: prod.category?._id || '',
+          category: typeof prod.category === 'string' ? prod.category : (prod.category?._id || prod.category?.name || ''),
           description: prod.fullDescription || prod.shortDescription || '',
           price: prod.price || '',
+          isFeatured: prod.isFeatured || false,
         });
         if (prod.images && prod.images.length > 0) {
           setCurrentImage(prod.images[0]);
@@ -60,7 +62,8 @@ export default function EditProduct({ params }) {
   };
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const value = e.target.type === 'checkbox' ? e.target.checked : e.target.value;
+    setFormData({ ...formData, [e.target.name]: value });
   };
 
   const handleImageChange = (e) => {
@@ -101,6 +104,7 @@ export default function EditProduct({ params }) {
         shortDescription: formData.description.substring(0, 150),
         fullDescription: formData.description,
         price: Number(formData.price) || 0,
+        isFeatured: formData.isFeatured,
         images: imagePaths,
       };
 
@@ -163,8 +167,8 @@ export default function EditProduct({ params }) {
                 onChange={handleChange}
               >
                 <option value="">Select a category</option>
-                {categories.map((cat) => (
-                  <option key={cat._id} value={cat._id}>{cat.name}</option>
+                {categories.map((cat, idx) => (
+                  <option key={idx} value={cat}>{cat}</option>
                 ))}
               </select>
             </div>
@@ -212,6 +216,21 @@ export default function EditProduct({ params }) {
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 outline-none"
             />
             <p className="text-xs text-gray-500 mt-1">Upload a new image to replace the existing one.</p>
+          </div>
+
+          {/* FEATURED */}
+          <div className="flex items-center">
+            <input
+              type="checkbox"
+              id="isFeatured"
+              name="isFeatured"
+              checked={formData.isFeatured}
+              onChange={handleChange}
+              className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+            />
+            <label htmlFor="isFeatured" className="ml-2 block text-sm text-gray-900">
+              Show on Homepage Slider (Featured)
+            </label>
           </div>
 
           <div className="flex justify-end pt-4 border-t border-gray-100">
