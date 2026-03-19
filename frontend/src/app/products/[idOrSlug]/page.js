@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Navbar from '@/components/Navbar';
 import Footer from '@/components/Footer';
+import Image from 'next/image';
 
 async function getProduct(idOrSlug) {
   const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products/${idOrSlug}`, { next: { revalidate: 60 } });
@@ -22,6 +23,19 @@ export default async function ProductDetailPage({ params }) {
   const { idOrSlug } = await params;
   const product = await getProduct(idOrSlug);
 
+  const getCleanCategory = (cat) => {
+    if (!cat || !cat.name || typeof cat.name !== 'string') return { _id: 'cat-other', name: 'Other', slug: 'other' };
+    const lower = cat.name.toLowerCase();
+    if (lower.includes('test') || lower.includes('debug') || lower.includes('automated') || /\d{4,}/.test(cat.name)) {
+      return { _id: 'cat-other', name: 'Other', slug: 'other' };
+    }
+    return cat;
+  };
+
+  if (product) {
+    product.category = getCleanCategory(product.category);
+  }
+
   if (!product) {
     return (
       <>
@@ -41,9 +55,17 @@ export default async function ProductDetailPage({ params }) {
     );
   }
 
-  const defaultImage = product.images && product.images.length > 0 
+  const applyCloudinaryTransform = (url, transformStr) => {
+    if (!url || !url.includes('cloudinary.com') || !url.includes('/upload/')) return url;
+    if (url.includes(`/upload/${transformStr}/`)) return url;
+    return url.replace('/upload/', `/upload/${transformStr}/`);
+  };
+
+  const rawDefaultImage = product.images && product.images.length > 0 
     ? product.images[0]
     : 'https://via.placeholder.com/300x200';
+    
+  const defaultImage = applyCloudinaryTransform(rawDefaultImage, 'f_auto,q_95,w_800');
 
   return (
     <>
@@ -71,17 +93,20 @@ export default async function ProductDetailPage({ params }) {
               
               {/* Product Gallery */}
               <div className="p-8 lg:p-12 lg:border-r border-gray-100 bg-gray-50/50 flex flex-col items-center justify-center">
-                 <div className="relative w-full aspect-square bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6 p-4">
-                   <img src={defaultImage} alt={product.name} className="w-full h-full object-contain" />
+                 <div className="relative w-full bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden mb-6">
+                   <Image src={defaultImage} alt={product.name} width={800} height={800} quality={70} className="w-full h-auto object-contain" />
                  </div>
                  {/* Thumbnails (If more than 1 image) */}
                  {product.images?.length > 1 && (
                    <div className="flex space-x-4 overflow-x-auto pb-2 w-full">
-                     {product.images.map((img, idx) => (
-                       <div key={idx} className="w-24 h-24 flex-shrink-0 bg-white border border-gray-200 rounded-lg p-2 cursor-pointer hover:border-brand-green transition-colors">
-                         <img src={img} alt={`Thumbnail ${idx}`} className="w-full h-full object-contain" />
-                       </div>
-                     ))}
+                     {product.images.map((img, idx) => {
+                       const thumbImg = applyCloudinaryTransform(img, 'f_auto,q_80,w_100,h_100,c_fill');
+                       return (
+                         <div key={idx} className="w-24 h-24 flex-shrink-0 bg-white border border-gray-200 rounded-lg p-2 cursor-pointer hover:border-brand-green transition-colors relative overflow-hidden">
+                           <Image src={thumbImg} alt={`Thumbnail ${idx}`} width={100} height={100} quality={70} className="w-full h-full object-cover" />
+                         </div>
+                       );
+                     })}
                    </div>
                  )}
               </div>

@@ -1,10 +1,14 @@
 "use client";
 
+import { useState } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function ProductCard({ product }) {
+  const [imgError, setImgError] = useState(false);
+
   const getImageUrl = (url) => {
-    if (!url) return '/placeholder-product.png'; // or use the external placeholder
+    if (!url) return '/placeholder.png'; 
     if (url.startsWith('http') || url.startsWith('data:')) return url;
     const baseUrl = process.env.NEXT_PUBLIC_API_URL 
       ? process.env.NEXT_PUBLIC_API_URL.replace('/api', '') 
@@ -12,21 +16,28 @@ export default function ProductCard({ product }) {
     return `${baseUrl.replace(/\/$/, '')}/${url.replace(/^\//, '')}`;
   };
 
-  const imageSrc = getImageUrl(product?.images?.[0] || product?.image || product?.imageUrl || null);
-
-  const handleError = (e) => {
-    e.target.onerror = null;
-    e.target.src = 'https://via.placeholder.com/300x200?text=No+Image';
+  const applyCloudinaryTransform = (url, transformStr) => {
+    if (!url || !url.includes('cloudinary.com') || !url.includes('/upload/')) return url;
+    // Prevent double transformations if already applied
+    if (url.includes(`/upload/${transformStr}/`)) return url;
+    return url.replace('/upload/', `/upload/${transformStr}/`);
   };
+
+  const initialUrl = getImageUrl(product?.images?.[0] || product?.image || product?.imageUrl || null);
+  const rawImageSrc = applyCloudinaryTransform(initialUrl, 'f_auto,q_90,w_500');
+  const imageSrc = (imgError || rawImageSrc === '/placeholder-product.png') ? '/placeholder.png' : rawImageSrc;
 
   return (
     <div className="bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden group flex flex-col border border-gray-100">
-      <div className="relative h-64 w-full bg-gray-50 flex items-center justify-center p-4">
-        <img
+      <div className="relative h-64 w-full bg-gray-50 flex items-center justify-center p-4 overflow-hidden">
+        <Image
           src={imageSrc}
-          onError={handleError}
+          onError={() => setImgError(true)}
           alt={product.name || 'Product'}
-          className="object-contain h-full w-full group-hover:scale-105 transition-transform duration-300"
+          width={400}
+          height={300}
+          quality={70}
+          className="w-full h-auto object-contain group-hover:scale-105 transition-transform duration-300"
         />
 
         {product.category?.name && (

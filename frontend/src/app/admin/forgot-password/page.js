@@ -11,12 +11,12 @@ export default function ForgotPassword() {
 
   // Temporary logger to confirm navigation visually
   if (typeof window !== 'undefined') {
-    console.log("Forgot Password page successfully loaded!");
+
   }
 
   const handleRequestOtp = async (e) => {
     if (e) e.preventDefault();
-    console.log("TRIGGERING API CALL: /api/auth/forgot-password for email:", email);
+
     
     setLoading(true);
     setMsg({ type: '', text: '' });

@@ -60,13 +60,16 @@ export default async function Home() {
           
           <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24 md:py-32 flex items-center min-h-[600px]">
             <div className="max-w-3xl">
-              <span className="inline-block py-1 px-3 rounded text-sm font-bold tracking-wider text-brand-green bg-green-900/40 mb-6 uppercase border border-green-800/50">
+              <span className="inline-block py-1 px-3 rounded text-sm font-bold tracking-wider text-green-400 bg-green-500/10 mb-6 uppercase border border-green-500/20">
                 Premium Manufacturers & Suppliers
               </span>
-              <h1 className="text-4xl md:text-6xl font-extrabold text-white leading-tight mb-6">
-                Redefining Quality in <span className="text-brand-green">Waste Management</span> & Hospital Furniture
-              </h1>
-              <p className="text-xl text-gray-300 mb-10 leading-relaxed max-w-2xl text-justify">
+              <h1 className="text-4xl md:text-6xl font-extrabold leading-tight mb-6">
+  <span className="text-white">Redefining Quality in </span>
+  <span className="text-green-400">Waste Management</span>
+  <span className="text-gray-200"> & Hospital Furniture</span>
+</h1>
+              
+              <p className="text-xl text-gray-200 mb-10 leading-relaxed max-w-2xl text-justify">
                 <strong>MAALAVYA ENTERPRISES</strong> delivers uncompromising durability across our extensive catalog of biomedical waste bins, garbage containers, wheelbarrows, and precision medical furniture.
               </p>
               <div className="flex flex-col sm:flex-row gap-4">

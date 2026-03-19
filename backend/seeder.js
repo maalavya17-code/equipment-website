@@ -12,7 +12,7 @@ async function seedAdmin() {
     const password = process.env.ADMIN_PASSWORD;
 
     if (!email || !password) {
-      console.log("❌ Admin credentials missing in .env");
+      console.error("❌ Admin credentials missing in .env");
       return process.exit();
     }
 
@@ -24,9 +24,9 @@ async function seedAdmin() {
         password,
         role: "admin"
       });
-      console.log("✅ Admin created");
+
     } else {
-      console.log("⚠️ Admin already exists");
+
     }
 
     process.exit();

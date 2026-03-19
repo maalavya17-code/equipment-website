@@ -48,28 +48,41 @@ export default function ContactPage() {
                   <li className="flex items-start">
                     <span className="text-brand-green text-xl mr-4">📍</span>
                     <div>
-                      <p className="font-semibold text-gray-900">Address</p>
-                      <p className="text-gray-600">123 Industrial Phase I, City Name<br/>State, India - 123456</p>
+                      <p className="font-semibold text-gray-900">Corporate Office</p>
+                      <p className="text-gray-600">Maalavya Enterprises<br/>Vasundhara Sector 5, Ghaziabad<br/>Uttar Pradesh, India</p>
+                    </div>
+                  </li>
+                  <li className="flex items-start">
+                    <span className="text-brand-green text-xl mr-4">📍</span>
+                    <div>
+                      <p className="font-semibold text-gray-900">Sales Office</p>
+                      <p className="text-gray-600">Maalavya Enterprises<br/>Ashiyana Colony, Moradabad<br/>Uttar Pradesh, India – 244001</p>
                     </div>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-green text-xl mr-4">📞</span>
                     <div>
                       <p className="font-semibold text-gray-900">Phone</p>
-                      <p className="text-gray-600">+91 98765 43210<br/>+91 12345 67890</p>
+                      <p className="text-gray-600">
+                        Inquiry: <a href="tel:+917827791329" className="hover:text-brand-green hover:underline">+91-7827791329</a><br/>
+                        Sales: <a href="tel:+919971625110" className="hover:text-brand-green hover:underline">+91-9971625110</a>, <a href="tel:+917348077130" className="hover:text-brand-green hover:underline">+91-7348077130</a>
+                      </p>
                     </div>
                   </li>
                   <li className="flex items-start">
                     <span className="text-brand-green text-xl mr-4">✉️</span>
                     <div>
                       <p className="font-semibold text-gray-900">Email</p>
-                      <p className="text-gray-600">info@maalavya.com<br/>sales@maalavya.com</p>
+                      <p className="text-gray-600">
+                        <a href="mailto:sales.maalavya@gmail.com" className="hover:text-brand-green hover:underline">sales.maalavya@gmail.com</a><br/>
+                        <a href="mailto:contact.maalavaya@gmail.com" className="hover:text-brand-green hover:underline">contact.maalavaya@gmail.com</a>
+                      </p>
                     </div>
                   </li>
                 </ul>
                 
                 <div className="mt-8 pt-8 border-t border-gray-100">
-                  <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" className="flex items-center justify-center w-full bg-brand-green hover:bg-brand-green-dark text-white py-3 rounded-lg font-bold transition-colors shadow-md">
+                  <a href="https://wa.me/917827791329" target="_blank" rel="noreferrer" className="flex items-center justify-center w-full bg-brand-green hover:bg-brand-green-dark text-white py-3 rounded-lg font-bold transition-colors shadow-md">
                     <span>💬</span>
                     <span className="ml-2">Chat on WhatsApp</span>
                   </a>

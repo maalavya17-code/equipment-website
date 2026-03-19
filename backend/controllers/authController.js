@@ -93,9 +93,6 @@ const forgotPassword = async (req, res, next) => {
     await admin.save();
 
     // 🧪 Console fallback (keep this always)
-    console.log("\n============================");
-    console.log(`🔑 OTP for ${email}: ${otp}`);
-    console.log("============================\n");
 
     // 📧 Send Email via Resend
     try {

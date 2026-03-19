@@ -1,6 +1,8 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  /* config options here */
+  images: {
+    domains: ['api.maalavyaenterprises.com', 'localhost', 'via.placeholder.com', 'res.cloudinary.com'],
+  },
 };
 
 export default nextConfig;

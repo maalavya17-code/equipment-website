@@ -16,7 +16,7 @@ const upload = multer({ storage });
 
 // 🔥 THIS IS THE ROUTE YOU ARE MISSING
 router.post('/image', protect, upload.single('image'), async (req, res) => {
-  console.log("UPLOAD HIT"); // debug
+
 
   if (!req.file) {
     return res.status(400).json({ message: 'No file uploaded' });
