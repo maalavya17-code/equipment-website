@@ -41,10 +41,16 @@ export default function AdminLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100">
-      <div className="max-w-md w-full p-8 bg-white rounded-xl shadow-lg border border-gray-200">
-        <div className="text-center mb-8">
-          <h2 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h2>
+    <div className="min-h-screen flex items-center justify-center bg-gray-100 p-4">
+      <div className="max-w-md w-full">
+        <div className="mb-6">
+          <Link href="/" className="text-gray-600 hover:text-brand-green font-medium transition-colors inline-flex items-center">
+            ← Back to Website
+          </Link>
+        </div>
+        <div className="p-8 bg-white rounded-xl shadow-lg border border-gray-200">
+          <div className="text-center mb-8">
+            <h2 className="text-3xl font-bold text-gray-900 mb-2">Admin Panel</h2>
           <p className="text-gray-500">
             Sign in to manage your enterprise catalog
           </p>
@@ -100,6 +106,7 @@ export default function AdminLogin() {
             </p>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

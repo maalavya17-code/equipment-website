@@ -97,7 +97,7 @@ export default function AddProduct() {
       images: imagePaths,
     };
 
-    console.log("FINAL PAYLOAD:", payload); // DEBUG
+
 
     const res = await fetch(
       `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api'}/products`,

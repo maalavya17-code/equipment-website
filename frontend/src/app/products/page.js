@@ -21,12 +21,52 @@ export const metadata = {
 };
 
 export default async function ProductsPage({ searchParams }) {
-  const categories = await getCategories();
-  const allProducts = await getProducts();
+  const getCleanCategory = (cat) => {
+    if (!cat || !cat.name || typeof cat.name !== 'string') return { _id: 'cat-other', name: 'Other', slug: 'other' };
+    const lower = cat.name.toLowerCase();
+    if (lower.includes('test') || lower.includes('debug') || lower.includes('automated') || /\d{4,}/.test(cat.name)) {
+      return { _id: 'cat-other', name: 'Other', slug: 'other' };
+    }
+    return cat;
+  };
+
+  let fetchedCategories = await getCategories();
+  let allProducts = await getProducts();
   
   // Need to await searchParams in Next.js 15
   const sp = await searchParams;
   const activeCategory = sp?.category || '';
+
+  // Process products to assign fallback "Other" to invalid or missing categories
+  allProducts = allProducts.map(p => {
+    return { ...p, category: getCleanCategory(p.category) };
+  });
+
+  // Build the clean category list for the sidebar
+  const categoryMap = new Map();
+  
+  fetchedCategories.forEach(cat => {
+    const cleanCat = getCleanCategory(cat);
+    if (cleanCat.slug !== 'other') {
+      categoryMap.set(cleanCat.slug, cleanCat);
+    }
+  });
+
+  // Dynamically include valid categories present in products but missing from fetched list
+  allProducts.forEach(p => {
+    if (p.category && p.category.slug !== 'other') {
+      if (!categoryMap.has(p.category.slug)) {
+        categoryMap.set(p.category.slug, p.category);
+      }
+    }
+  });
+
+  const categories = Array.from(categoryMap.values());
+  
+  // Add "Other" if any product falls into it and it isn't already handled
+  if (allProducts.some(p => p.category?.slug === 'other') && !categoryMap.has('other')) {
+    categories.push({ _id: 'cat-other', name: 'Other', slug: 'other' });
+  }
 
   const filteredProducts = activeCategory
     ? allProducts.filter(p => p.category?.slug === activeCategory)

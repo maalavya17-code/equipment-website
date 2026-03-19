@@ -52,15 +52,24 @@ export default function Footer() {
             <ul className="space-y-4 text-sm text-gray-400">
               <li className="flex items-start">
                 <span className="text-brand-green mt-1 mr-3 text-lg border border-gray-700 p-2 rounded-full bg-gray-800">📍</span>
-                <span>123 Industrial Phase I, City Name, State, India - 123456</span>
+                <span>
+                  <strong>Corporate:</strong> Vasundhara Sector 5, Ghaziabad, UP<br/>
+                  <strong>Sales:</strong> Ashiyana Colony, Moradabad, UP 244001
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="text-brand-green mt-1 mr-3 text-lg border border-gray-700 p-2 rounded-full bg-gray-800">📞</span>
-                <span>+91 98765 43210<br/>+91 12345 67890</span>
+                <span>
+                  <a href="tel:+917827791329" className="hover:text-brand-green">Inquiry: +91-7827791329</a><br/>
+                  <a href="tel:+919971625110" className="hover:text-brand-green">Sales: +91-9971625110</a>, <a href="tel:+917348077130" className="hover:text-brand-green">+91-7348077130</a>
+                </span>
               </li>
               <li className="flex items-start">
                 <span className="text-brand-green mt-1 mr-3 text-lg border border-gray-700 p-2 rounded-full bg-gray-800">✉️</span>
-                <span>info@maalavya.com<br/>sales@maalavya.com</span>
+                <span>
+                  <a href="mailto:sales.maalavya@gmail.com" className="hover:text-brand-green">sales.maalavya@gmail.com</a><br/>
+                  <a href="mailto:contact.maalavaya@gmail.com" className="hover:text-brand-green">contact.maalavaya@gmail.com</a>
+                </span>
               </li>
             </ul>
           </div>
