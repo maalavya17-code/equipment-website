@@ -41,7 +41,7 @@ export default function ProductCard({ product }) {
         />
 
         {product.category && (
-          <span className="absolute top-3 left-3 bg-brand-teal text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm z-10">
+          <span className="absolute top-3 left-3 bg-white/90 text-black text-xs font-bold px-3 py-1 rounded-full shadow-sm z-10">
             {typeof product.category === 'string' ? product.category : product.category.name}
           </span>
         )}

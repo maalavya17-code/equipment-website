@@ -122,29 +122,9 @@ export default async function ProductDetailPage({ params }) {
                      {product.category.name}
                    </span>
                  )}
-                 <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                   {product.shortDescription}
+                 <p className="text-lg text-gray-600 mb-8 leading-relaxed whitespace-pre-wrap">
+                   {product.fullDescription}
                  </p>
-                 
-                 <div className="bg-gray-50 p-6 rounded-xl border border-gray-100 mb-8">
-                   <h3 className="font-bold text-gray-900 mb-4 flex items-center">
-                     <span className="text-brand-green mr-2">⭐</span> Key Advantages
-                   </h3>
-                   <ul className="space-y-3">
-                     {product.features?.length > 0 ? (
-                       product.features.map((opt, i) => (
-                         <li key={i} className="flex items-start">
-                           <svg className="w-5 h-5 text-brand-green mr-3 mt-0.5 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                           </svg>
-                           <span className="text-gray-700">{opt}</span>
-                         </li>
-                       ))
-                     ) : (
-                       <li className="text-gray-500 italic">No specific features listed.</li>
-                     )}
-                   </ul>
-                 </div>
 
                  <div className="mt-auto flex flex-col sm:flex-row gap-4 pt-6 border-t border-gray-100">
                    <Link href="/contact" className="flex-1 bg-brand-green hover:bg-brand-green-light text-white text-center font-bold py-4 px-8 rounded-xl shadow-md transition-colors text-lg flex items-center justify-center">
@@ -160,39 +140,10 @@ export default async function ProductDetailPage({ params }) {
             </div>
           </div>
 
-          {/* Detailed Tabs: Specs & Full Description */}
-          <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-12">
-            {/* Very simple Tab-like vertical stack for static Server Component */}
-            
-            <div className="p-8 lg:p-12 border-b border-gray-100">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Product Description</h2>
-              <div className="prose max-w-none text-gray-700 leading-relaxed font-serif whitespace-pre-wrap">
-                {product.fullDescription}
-              </div>
-            </div>
-
-            <div className="p-8 lg:p-12">
-              <h2 className="text-2xl font-bold text-gray-900 mb-6">Technical Specifications</h2>
-              {product.specifications?.length > 0 ? (
-                <div className="overflow-x-auto">
-                  <table className="w-full text-left border-collapse">
-                    <tbody>
-                      {product.specifications.map((spec, i) => (
-                        <tr key={i} className={`border-b border-gray-100 ${i % 2 === 0 ? 'bg-gray-50/50' : 'bg-white'}`}>
-                          <th className="py-4 px-6 font-semibold text-gray-900 w-1/3 align-top">{spec.key}</th>
-                          <td className="py-4 px-6 text-gray-700">{spec.value}</td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
-              ) : (
-                <p className="text-gray-500 italic">No technical specifications provided for this product.</p>
-              )}
-            </div>
-            
-            {product.certifications?.length > 0 && (
-              <div className="p-8 lg:p-12 bg-gray-50 border-t border-gray-100">
+          {/* Certifications & Compliance Section */}
+          {product.certifications?.length > 0 && (
+            <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden mb-12">
+              <div className="p-8 lg:p-12 bg-gray-50">
                 <h2 className="text-xl font-bold text-gray-900 mb-6">Certifications & Compliance</h2>
                 <div className="flex flex-wrap gap-4">
                   {product.certifications.map((cert, i) => (
@@ -202,8 +153,8 @@ export default async function ProductDetailPage({ params }) {
                   ))}
                 </div>
               </div>
-            )}
-          </div>
+            </div>
+          )}
 
         </div>
       </main>

@@ -6,7 +6,12 @@ const getProducts = async (req, res, next) => {
     const keyword = req.query.keyword ? { name: { $regex: req.query.keyword, $options: 'i' } } : {};
     
     // Category is now a native string Enum
-    const categoryQuery = req.query.category ? { category: req.query.category } : {};
+    let categoryQuery = {};
+    if (req.query.category) {
+      const normalizedCategory = req.query.category.replace(/-/g, ' ');
+      console.log('Category Filter - Incoming:', req.query.category, 'Normalized:', normalizedCategory);
+      categoryQuery = { category: { $regex: `^${normalizedCategory}$`, $options: 'i' } };
+    }
 
     const page = Number(req.query.page) || 1;
     const limit = Number(req.query.limit) || 12; // Use 12 for better grid display
